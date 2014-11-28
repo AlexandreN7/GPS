@@ -81,109 +81,204 @@
 
 
 
-void clrLCD()
+void clrLCD()  //Clears display and returns cursor to the home position (address 0).
 {
-//INIT
-    RS=0; //envoi d'instructions
-    RW=0;
+
+//INITIALISATION
+    RS=0; //Selection du registre d'instructions
+    RW=0; //Write sur le LCD
     EN=0;
-__delay_ms(100);
-//CLEAR
-    PORTC=0b00000001; //clrLCD
+    __delay_ms(10);
+
+//INSTRUCTIONS
+    D0=1; //***
+    D1=0;
+    D2=0;
+    D3=0;
+    D4=0;
+    D5=0;
+    D6=0;
+    D7=0;
+
     EN=1;
-__delay_ms(100);
+    __delay_ms(10);
+
     EN=0;
-__delay_ms(100);
+    __delay_ms(10);
+
 }
 
-void setLCD()
+
+void returnH()  //Returns cursor to the home position (address 0) without changing memory.
 {
-//INIT
-RS=0; //envoi d'instructions
-RW=0;
-EN=0;
-__delay_ms(100);
-//set
-D0=0;
-D1=0;
-D2=0; // 0: 5x8matrice 1: 5x11matrice
-D3=1; //nb de lignes 1: 2 lignes 0: 1 ligne
-D4=1; //data vector 1: 8bits 0: 4bits
-D5=1;
-D6=0;
-D7=0;
-EN=1;
-__delay_ms(100);
-EN=0;
-__delay_ms(100);
+
+//INITIALISATION
+    RS=0; //Selection du registre d'instructions
+    RW=0; //Write sur le LCD
+    EN=0;
+    __delay_ms(10);
+
+//INSTRUCTIONS
+    D0=0;
+    D1=1; //***
+    D2=0;
+    D3=0;
+    D4=0;
+    D5=0;
+    D6=0;
+    D7=0;
+
+    EN=1;
+    __delay_ms(10);
+
+    EN=0;
+    __delay_ms(10);
+
 }
 
-void dispONOFF()
-{
-//INIT
-RS=0; //envoi d'instructions
-RW=0;
-EN=0;
-__delay_ms(100);
-//set
-D0=0; // cursor blink
-D1=0; // cursor on/off
-D2=1; // lcd on/off
-D3=1;
-D4=0;
-D5=0;
-D6=0;
-D7=0;
-EN=1;
-__delay_ms(100);
-EN=0;
-__delay_ms(100);
-}
 
 void entryModeSet()
 {
-//INIT
-RS=0; //envoi d'instructions
-RW=0;
-EN=0;
-__delay_ms(100);
-//set
-D0=0; // blinking display
-D1=1; // direction of cursor
-D2=1;
-D3=0;
-D4=0;
-D5=0;
-D6=0;
-D7=0;
-EN=1;
-__delay_ms(100);
-EN=0;
-__delay_ms(100);
+
+//INITIALISATION
+    RS=0; //Selection du registre d'instructions
+    RW=0; //Write sur le LCD
+    EN=0;
+    __delay_ms(1);
+
+//INSTRUCTIONS
+    D0=0; //If S = 1 the display will be shifted to the left (if I/D = 1) or right (if I/D = 0) on subsequent DD RAM write operations.
+    D1=1; //Specifies whether to increment (D1 = 1) or decrement (D1 = 0) the address counter after subsequent DD RAM operations.
+    D2=1; //***
+    D3=0;
+    D4=0;
+    D5=0;
+    D6=0;
+    D7=0;
+
+    EN=1;
+    __delay_ms(1);
+
+    EN=0;
+    __delay_ms(1);
+
+}
+
+
+void dispONOFF()
+{
+
+//INITIALISATION
+    RS=0; //Selection du registre d'instructions
+    RW=0; //Write sur le LCD
+    EN=0;
+    __delay_ms(1);
+
+//INSTRUCTIONS
+    D0=0; //Sets blinking of cursor position character.
+    D1=1; //Sets cursor On(1)/Off(0).
+    D2=1; //Sets On(1)/Off(0) all display.
+    D3=1; //***
+    D4=0;
+    D5=0;
+    D6=0;
+    D7=0;
+
+    EN=1;
+    __delay_ms(1);
+
+    EN=0;
+    __delay_ms(1);
 
 }
 
 
 void cursorDisp()
 {
-//INIT
-RS=0; //envoi d'instructions
-RW=0;
-EN=0;
-__delay_ms(100);
-//set
-D0=0; // blinking display
-D1=0; // direction of cursor
-D2=1;
-D3=0;
-D4=1;
-D5=0;
-D6=0;
-D7=0;
-EN=1;
-__delay_ms(100);
-EN=0;
-__delay_ms(100);
+
+//INITIALISATION
+    RS=0; //Selection du registre d'instructions
+    RW=0; //Write sur le LCD
+    EN=0;
+    __delay_ms(1);
+
+//INSTRUCTIONS
+    D0=0; //*
+    D1=0; //*
+    D2=0; //Shift direction (R/L)
+    D3=1; //Sets display-shift or cursor-move (S/C)
+    D4=1; //***
+    D5=0;
+    D6=0;
+    D7=0;
+
+    EN=1;
+    __delay_ms(1);
+
+    EN=0;
+    __delay_ms(1);
+
+}
+
+
+void setLCD() //Sets interface data length (DL), number of display lines (N) and character font (F).
+{
+
+//INITIALISATION
+    RS=0; //Selection du registre d'instructions
+    RW=0; //Write sur le LCD
+    EN=0;
+    __delay_ms(1);
+
+//INSTRUCTIONS
+    D0=0; //*
+    D1=0; //*
+    D2=0; // 0: 5x8matrice --- 1: 5x11matrice
+    D3=1; // 1: 2 lignes --- 0: 1 ligne
+    D4=1; // 1: 8bits --- 0: 4bits
+    D5=1; //***
+    D6=0;
+    D7=0;
+
+    EN=1;
+    __delay_ms(1);
+
+    EN=0;
+    __delay_ms(1);
+
+}
+
+
+void placeCursor(int ligne, int colonne)
+{
+
+//INITIALISATION
+    RS=0; //Selection du registre d'instructions
+    RW=0; //Write sur le LCD
+    EN=0;
+    __delay_ms(1);
+
+//INSTRUCTIONS
+    if(ligne==1)
+    {
+        PORTC = 0x80 + 0x00 + (colonne-1);
+    }
+    else if(ligne==2)
+    {
+        PORTC = 0x80 + 0x40 + (colonne-1);
+    }
+    else
+    {
+
+    }
+
+    __delay_ms(1);
+
+    EN=1;
+    __delay_ms(1);
+
+    EN=0;
+    __delay_ms(1);
 
 }
 
@@ -191,48 +286,71 @@ __delay_ms(100);
 void initLCD()
 {
 
-setLCD();
-dispONOFF();
-entryModeSet();
-cursorDisp();
-clrLCD();
-__delay_ms(100);
+    clrLCD();
+    setLCD();
+    dispONOFF();
+    entryModeSet();
+    clrLCD();
+    __delay_ms(1);
 
 }
+
+
 void writeLCD(char letter)
 {
-//INIT
-RS = 1;
-RW = 0;
-__delay_ms(100);
 
-PORTC = letter;
+//INITIALISATION
+    RS=0; //Selection du registre d'instructions
+    RW=0; //Write sur le LCD
+    EN=0;
+    __delay_ms(1);
 
-EN=1;
-__delay_ms(100);
+//INSTRUCTIONS
+    RS=1; //Selection du registre data
 
-EN=0;
-__delay_ms(100);
+    PORTC = letter;
+
+    EN=1;
+    __delay_ms(1);
+
+    EN=0;
+    __delay_ms(1);
+
 }
 
+
+void writeStringLCD(char *phrase)
+{
+
+    while(*phrase)
+    {
+        writeLCD(*phrase++);
+    }
+
+}
 
 int main(int argc, char** argv)
 
 {
 
     TRISA=0b00000000;
-    TRISC=0b00000000;
     TRISB=0b00000000;
+    TRISC=0b00000000;
+
+    char msg[80] = "Joyeux Noel ! Boules et Guirlandes !";
 
     initLCD();
 
-    writeLCD('A');
-    writeLCD('A');
-    writeLCD('A');
-    writeLCD('A');
-    
+    writeStringLCD(msg);
+    placeCursor(2,5);
+    writeStringLCD("Caca de Pere Noel !");
 
-    
-    
+    while(1)
+    {
+        cursorDisp();
+        __delay_ms(100);__delay_ms(100);__delay_ms(100);__delay_ms(100);__delay_ms(100);
+        __delay_ms(100);
+    }
+
 }
 
