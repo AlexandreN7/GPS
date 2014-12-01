@@ -40,16 +40,16 @@ void initComms()
 
    //////////////////////////SETTING BAUDRATE////////////////
    //((FCY/16)/BAUD) - 1; // set baud to 9600  FCY=4000000
-   // SPBRG = 103;      => a choper dans la datasheet
-   //SPBRG2 = 25;      // 9600
+   SPBRG = 103;      //=> a choper dans la datasheet
+   SPBRG2 = 25;      // 9600
 
    //SPBRG = 51;   // 19200
    //SPBRG2 = 12;
 
 
-    SPBRG = 115;  // 115200  // On suppose que FCY = 64 000 000
-    SPBRGH2 = 0;
-    SPBRG2 = 137;
+    //SPBRG = 115;  // 115200  // On suppose que FCY = 64 000 000
+    //SPBRGH2 = 0;
+    //SPBRG2 = 137;
 
 }
 

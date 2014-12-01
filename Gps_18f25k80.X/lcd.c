@@ -8,7 +8,7 @@ void clrLCD()  //Clears display and returns cursor to the home position (address
     RS=0; //Selection du registre d'instructions
     RW=0; //Write sur le LCD
     EN=0;
-    __delay_ms(10);
+    __delay_ms(1);
 
 //INSTRUCTIONS
     D0=1; //***
@@ -21,10 +21,10 @@ void clrLCD()  //Clears display and returns cursor to the home position (address
     D7=0;
 
     EN=1;
-    __delay_ms(10);
+    __delay_ms(20);
 
     EN=0;
-    __delay_ms(10);
+    __delay_ms(1);
 
 }
 
@@ -36,7 +36,7 @@ void returnH()  //Returns cursor to the home position (address 0) without changi
     RS=0; //Selection du registre d'instructions
     RW=0; //Write sur le LCD
     EN=0;
-    __delay_ms(10);
+    __delay_ms(1);
 
 //INSTRUCTIONS
     D0=0;
@@ -49,10 +49,10 @@ void returnH()  //Returns cursor to the home position (address 0) without changi
     D7=0;
 
     EN=1;
-    __delay_ms(10);
+    __delay_ms(1);
 
     EN=0;
-    __delay_ms(10);
+    __delay_ms(1);
 
 }
 
@@ -113,7 +113,7 @@ void dispONOFF()
 }
 
 
-void cursorDisp()
+void cursorDisp(int SC, int RL)
 {
 
 //INITIALISATION
@@ -125,8 +125,8 @@ void cursorDisp()
 //INSTRUCTIONS
     D0=0; //*
     D1=0; //*
-    D2=0; //Shift direction (R/L)
-    D3=1; //Sets display-shift or cursor-move (S/C)
+    D2=RL; //Shift direction (R/L)
+    D3=SC; //Sets display-shift or cursor-move (S/C)
     D4=1; //***
     D5=0;
     D6=0;
@@ -169,7 +169,7 @@ void setLCD() //Sets interface data length (DL), number of display lines (N) and
 }
 
 
-void placeCursor(int lig, int col)
+void placeCursor(int ligne, int colonne)
 {
 //INITIALISATION
     RS=0; //Selection du registre d'instructions
@@ -177,13 +177,13 @@ void placeCursor(int lig, int col)
     EN=0;
     __delay_ms(1);
 
-    if(lig==1)
+    if(ligne==1)
     {
-        PORTC = 0x80 + 0x00 + (col-1);
+        PORTC = 0x80 + 0x00 + (colonne-1);
     }
-    else if(lig==2)
+    else if(ligne==2)
     {
-        PORTC = 0x80 + 0x40 + (col-1);
+        PORTC = 0x80 + 0x40 + (colonne-1);
     }
     else
     {
@@ -212,7 +212,7 @@ void initLCD()
 }
 
 
-void writeLCD(char let)
+void writeLCD(char lettre)
 {
 
 //INITIALISATION
@@ -224,7 +224,7 @@ void writeLCD(char let)
 //INSTRUCTIONS
     RS=1; //Selection du registre data
 
-    PORTC = let;
+    PORTC = lettre;
 
     EN=1;
     __delay_ms(1);
@@ -235,12 +235,49 @@ void writeLCD(char let)
 }
 
 
-void writeStringLCD(char *phras)
+int lengthMess(char *phrase)
 {
 
-    while(*phras)
+    int taille=0;
+
+    while(*phrase)
     {
-        writeLCD(*phras++);
+        taille++;
+        *phrase++;
     }
 
+    return taille;
+
 }
+
+
+
+void writeStringLCD(char *phrase)
+{
+
+    int i=0;
+    int taille=0;
+
+    taille = lengthMess(phrase);
+
+    while(*phrase)
+    {
+        writeLCD(*phrase++);
+    }
+
+    if(taille>16 && taille<=40)
+    {
+        __delay_ms(100);__delay_ms(100);
+        
+        for(i=1;i<=(taille-16);i++)
+        {
+            cursorDisp(1,0);
+            __delay_ms(100);
+        }
+
+        __delay_ms(100);__delay_ms(100);
+    }
+    
+}
+
+

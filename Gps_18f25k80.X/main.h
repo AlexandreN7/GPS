@@ -5,15 +5,13 @@
 
 
 #include <xc.h>
-#include <htc.h>
 #include <pic18f25k80.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <delays.h>
 #include "uart.h"
 #include "lcd.h"
 
-#define _XTAL_FREQ 8000000 //à checker dans les paramètres oscill.
+#define _XTAL_FREQ 4000000 //à checker dans les paramètres oscill.
 
 // Configuration register
 // CONFIG1L
@@ -39,7 +37,7 @@
 #pragma config MSSPMSK = MSK7 // MSSP address masking (7 Bit address masking mode)
 #pragma config MCLRE = OFF // Master Clear Enable (MCLR Disabled, RG5 Enabled)
 // CONFIG4L
-#pragma config STVREN = ON // Stack Overflow Reset (Enabled)
+#pragma config STVREN = OFF// Stack Overflow Reset (Enabled)
 #pragma config BBSIZ = BB2K // Boot Block Size (2K word Boot Block size)
 // CONFIG5L
 #pragma config CP0 = OFF // Code Protect 00800-01FFF (Disabled)
