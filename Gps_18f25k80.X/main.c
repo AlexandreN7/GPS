@@ -57,7 +57,8 @@ void main()
 
     while(1)
     {
-
+    //    writeStringLCD(msg);
+    //    clrLCD();
     }
 
 }
